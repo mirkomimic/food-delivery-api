@@ -32,4 +32,4 @@ Route::post('/broadcasting/auth', function () {
 
 Route::get('/test', [HomeController::class, 'index'])->middleware('auth:sanctum');
 
-Route::resource('dashboard/restaurant/products', ProductController::class);
+Route::resource('dashboard/restaurant/products', ProductController::class)->only(['index', 'store', 'update', 'destroy']);

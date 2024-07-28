@@ -49,11 +49,6 @@ class Restaurant extends Authenticatable
     ];
   }
 
-  // public function receivesBroadcastNotificationsOn(): string
-  // {
-  //   return 'notificationChannel';
-  // }
-
   public function categories(): BelongsToMany
   {
     return $this->belongsToMany(Category::class, 'restaurant_categories');

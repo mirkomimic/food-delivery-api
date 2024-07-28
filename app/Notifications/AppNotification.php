@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use App\Enums\NotificationsMsg;
 
 class AppNotification extends Notification
 {
@@ -18,7 +19,7 @@ class AppNotification extends Notification
    * Create a new notification instance.
    */
   public function __construct(
-    public string $message,
+    private NotificationsMsg $message,
   ) {
     //
   }
@@ -26,7 +27,7 @@ class AppNotification extends Notification
   public function toBroadcast(object $notifiable): BroadcastMessage
   {
     return (new BroadcastMessage([
-      'message' => $this->message,
+      'message' => $this->message->value,
     ]))->onConnection('sync');
   }
 

@@ -8,6 +8,8 @@ use App\Services\FilesCrud\SingleFileCrud;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use function PHPUnit\Framework\isNull;
+
 class RestaurantProductsCrud extends Crud
 {
   protected int $restaurant_id;
@@ -43,9 +45,30 @@ class RestaurantProductsCrud extends Crud
 
   public function update(Request $request, int $id)
   {
+    $product = Product::find($id);
+    $product->name = $request->name;
+    $product->price = $request->price;
+
+    if ($request->hasFile('image')) {
+      if (!isNull($product->image)) {
+        $this->singleFileCrud->delete('images/products', $product->image);
+      } else {
+        $this->singleFileCrud->save('images/products', $request->image);
+      }
+      $product->image = $request->image->hashName();
+    }
+
+    $product->save();
   }
 
   public function delete(int $id)
   {
+    $product = Product::find($id);
+
+    if ($product->image) {
+      $this->singleFileCrud->delete('images/products', $product->image);
+    }
+
+    $product->delete();
   }
 }

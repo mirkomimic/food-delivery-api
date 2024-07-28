@@ -10,4 +10,11 @@ class SingleFileCrud
   {
     Storage::put("public/{$path}", $file);
   }
+
+  public function delete(string $path, string $image): void
+  {
+    if (Storage::disk('public')->exists("{$path}/{$image}")) {
+      Storage::disk('public')->delete("{$path}/{$image}");
+    }
+  }
 }
