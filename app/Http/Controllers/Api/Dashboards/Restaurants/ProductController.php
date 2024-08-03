@@ -6,7 +6,6 @@ use App\Enums\NotificationsMsg;
 use App\Http\Requests\ProductRequest;
 use App\Notifications\AppNotification;
 use App\Services\CRUD\RestaurantProductsCrud;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 
