@@ -18,12 +18,14 @@ class ProductFactory extends Factory
   public function definition(): array
   {
 
-    $faker = \Faker\Factory::create();
-    $faker->addProvider(new \FakerRestaurant\Provider\en_US\Restaurant($faker));
+    // $faker = \Faker\Factory::create();
+    // $faker->addProvider(new \FakerRestaurant\Provider\en_US\Restaurant($faker));
 
     return [
-      'restaurant_id' => Restaurant::all('id')->random(),
-      'name' => $faker->foodName(),
+      // 'restaurant_id' => Restaurant::all('id')->random(),
+      'restaurant_id' => Restaurant::factory(),
+      // 'name' => $faker->foodName(),
+      'name' => fake()->word(),
       'price' => fake()->numberBetween(1, 20000)
     ];
   }

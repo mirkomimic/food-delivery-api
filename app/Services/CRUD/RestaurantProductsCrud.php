@@ -20,7 +20,7 @@ class RestaurantProductsCrud extends Crud
     $this->restaurant_id = Auth::guard('restaurant')->user()->id;
   }
 
-  public function create(Request $request): void
+  public function create(Request $request)
   {
     $product = new Product();
     $product->name = $request->name;
@@ -33,6 +33,8 @@ class RestaurantProductsCrud extends Crud
     }
 
     $product->save();
+
+    return $product;
   }
 
   public function read(): object
@@ -59,6 +61,8 @@ class RestaurantProductsCrud extends Crud
     }
 
     $product->save();
+
+    return $product;
   }
 
   public function delete(int $id)
@@ -70,5 +74,7 @@ class RestaurantProductsCrud extends Crud
     }
 
     $product->delete();
+
+    return $product;
   }
 }
