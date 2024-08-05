@@ -7,7 +7,9 @@ use App\Models\Restaurant;
 use App\Notifications\AppNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ProductControllerTest extends TestCase
@@ -20,7 +22,7 @@ class ProductControllerTest extends TestCase
     $products = Product::factory()
       ->for($restaurant)
       ->count(3)
-      ->create();
+      ->create(['image' => null]);
 
     $response = $this->actingAs($restaurant, 'restaurant')
       ->get(route('dashboard.restaurant.products.index'))
@@ -36,33 +38,39 @@ class ProductControllerTest extends TestCase
   {
     Notification::fake();
     $restaurant = Restaurant::find(Restaurant::factory()->create()->id);
-    $product = Product::factory()->for($restaurant)->make();
+    $image = UploadedFile::fake()->image('photo1.jpg');
+    $product = Product::factory()->for($restaurant)->make(['image' => $image]);
 
     $response = $this->actingAs($restaurant, 'restaurant')
       ->post(route('dashboard.restaurant.products.store'), [
         'name' => $product->name,
-        'price' => $product->price
+        'price' => $product->price,
+        'image' => $product->image
       ])->assertCreated();
 
     Notification::assertSentTo($restaurant, AppNotification::class);
-
-    $this->assertSame($product->name, $response['product']['name']);
     $this->assertDatabaseHas('products', [
-      'name' => $product->name,
-      'price' => $product->price
+      'name' => $response['product']['name'],
+      'price' => $response['product']['price'],
+      'image' => $response['product']['image'],
     ]);
+    $this->assertFileExists(public_path("storage/images/products/{$response['product']['image']}"));
+
+    $this->deleteImage('images/products', $response['product']['image']);
   }
 
   public function test_update(): void
   {
     Notification::fake();
     $restaurant = Restaurant::find(Restaurant::factory()->create()->id);
-    $product = Product::factory()->for($restaurant)->create();
+    $image = UploadedFile::fake()->image('photo1.jpg');
+    $product = Product::factory()->for($restaurant)->create(['image' => $image]);
 
     $response = $this->actingAs($restaurant, 'restaurant')
       ->put(route('dashboard.restaurant.products.update', $product->id), [
         'name' => 'updated name',
-        'price' => $product->price
+        'price' => $product->price,
+        'image' => $product->image
       ])->assertOk();
 
     Notification::assertSentTo($restaurant, AppNotification::class);
@@ -71,6 +79,9 @@ class ProductControllerTest extends TestCase
     $this->assertDatabaseHas('products', [
       'name' => 'updated name',
     ]);
+    $this->assertFileExists(public_path("storage/images/products/{$response['product']['image']}"));
+
+    $this->deleteImage('images/products', $response['product']['image']);
   }
 
   public function test_destroy(): void
@@ -87,5 +98,6 @@ class ProductControllerTest extends TestCase
     $this->assertDatabaseMissing('products', [
       'name' => $product->name,
     ]);
+    $this->assertFileDoesNotExist(public_path("storage/images/products/{$product->image}"));
   }
 }
