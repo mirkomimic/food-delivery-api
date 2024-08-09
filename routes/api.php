@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Dashboards\Restaurants\ProductController;
 use App\Http\Controllers\Api\HomeController;
+use App\Http\Controllers\Api\Shop\RestaurantProducts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
@@ -23,15 +24,16 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
   return $user;
 });
 
-// Broadcast::routes();
 Broadcast::routes(['middleware' => ['auth:sanctum']]);
 
 Route::post('/broadcasting/auth', function () {
   return Auth::user();
 });
 
-Route::get('/test', [HomeController::class, 'index'])->middleware('auth:sanctum');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::name('dashboard.restaurant.')->group(function () {
+Route::name('dashboard.restaurant.')->middleware('auth:restaurant')->group(function () {
   Route::resource('dashboard/restaurant/products', ProductController::class)->only(['index', 'store', 'update', 'destroy']);
 });
+
+Route::resource('restaurant.products', RestaurantProducts::class)->only('index');

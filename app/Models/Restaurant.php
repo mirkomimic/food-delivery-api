@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\Request;
 
 class Restaurant extends Authenticatable
 {
@@ -57,5 +59,15 @@ class Restaurant extends Authenticatable
   public function products(): HasMany
   {
     return $this->hasMany(Product::class);
+  }
+
+  // https://laravel.com/docs/11.x/eloquent#local-scopes
+  public function scopeFilter(Builder $query, Request $request)
+  {
+    $query->when($request->categories, function (Builder $query, $value) {
+      $query->whereHas('categories', function ($q) use ($value) {
+        $q->whereIn('category_id', $value);
+      });
+    });
   }
 }

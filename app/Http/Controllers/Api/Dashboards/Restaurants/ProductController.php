@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Dashboards\Restaurants;
 
 use App\Enums\NotificationsMsg;
 use App\Http\Requests\ProductRequest;
+use App\Models\Product;
 use App\Notifications\AppNotification;
 use App\Services\CRUD\RestaurantProductsCrud;
 use Illuminate\Support\Facades\Auth;
