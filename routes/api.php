@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Api\Dashboards\Restaurants\ProductController;
 use App\Http\Controllers\Api\HomeController;
-use App\Http\Controllers\Api\Shop\RestaurantProducts;
+use App\Http\Controllers\Api\Shop\RestaurantProductsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
@@ -36,4 +36,4 @@ Route::name('dashboard.restaurant.')->middleware('auth:restaurant')->group(funct
   Route::resource('dashboard/restaurant/products', ProductController::class)->only(['index', 'store', 'update', 'destroy']);
 });
 
-Route::resource('restaurant.products', RestaurantProducts::class)->only('index');
+Route::resource('restaurant.products', RestaurantProductsController::class)->only('index');

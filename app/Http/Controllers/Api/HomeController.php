@@ -14,7 +14,7 @@ class HomeController extends Controller
   public function index(Request $request)
   {
     $restaurants = Restaurant::filter($request)
-      ->paginate(6);
+      ->with('categories')->paginate(6);
 
     $categories = Category::query()
       ->withCount('restaurants')

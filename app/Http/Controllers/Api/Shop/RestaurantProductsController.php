@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
-class RestaurantProducts extends Controller
+class RestaurantProductsController extends Controller
 {
 
   public function index(Request $request, Restaurant $restaurant)
