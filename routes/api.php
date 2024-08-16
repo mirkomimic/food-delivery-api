@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Dashboards\Restaurants\ProductController;
 use App\Http\Controllers\Api\HomeController;
+use App\Http\Controllers\Api\Shop\OrderController;
 use App\Http\Controllers\Api\Shop\RestaurantProductsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,3 +38,5 @@ Route::name('dashboard.restaurant.')->middleware('auth:restaurant')->group(funct
 });
 
 Route::resource('restaurant.products', RestaurantProductsController::class)->only('index');
+
+Route::resource('orders', OrderController::class)->only('store');
