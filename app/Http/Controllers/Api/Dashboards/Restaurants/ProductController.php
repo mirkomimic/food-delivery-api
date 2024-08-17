@@ -29,12 +29,12 @@ class ProductController
 
   public function store(ProductRequest $request)
   {
-    $product = $this->restaurantProductCrud->create($request);
+    // $product = $this->restaurantProductCrud->create($request);
 
     Notification::send(Auth::guard('restaurant')->user(), new AppNotification(NotificationsMsg::PRODUCT_CREATED));
 
     return response([
-      'product' => $product
+      // 'product' => $product
     ], Response::HTTP_CREATED);
   }
 

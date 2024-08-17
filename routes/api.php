@@ -26,10 +26,11 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Broadcast::routes(['middleware' => ['auth:sanctum']]);
+// Broadcast::routes(['middleware' => ['web', 'auth:restaurant']]);
 
-Route::post('/broadcasting/auth', function () {
-  return Auth::user();
-});
+// Route::post('/broadcasting/auth', function () {
+//   return Auth::user();
+// });
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
