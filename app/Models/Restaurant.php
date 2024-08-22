@@ -61,6 +61,11 @@ class Restaurant extends Authenticatable
     return $this->hasMany(Product::class);
   }
 
+  public function orders(): HasMany
+  {
+    return $this->hasMany(Order::class);
+  }
+
   // https://laravel.com/docs/11.x/eloquent#local-scopes
   public function scopeFilter(Builder $query, Request $request)
   {

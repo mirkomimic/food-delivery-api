@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Dashboards\Restaurants\HomeController as RestaurantsHomeController;
 use App\Http\Controllers\Api\Dashboards\Restaurants\ProductController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\Shop\OrderController;
@@ -25,16 +26,15 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
   return $user;
 });
 
+// https://stackoverflow.com/questions/47643417/post-http-localhost8000-broadcasting-auth-403-forbidden
 Broadcast::routes(['middleware' => ['auth:sanctum']]);
-// Broadcast::routes(['middleware' => ['web', 'auth:restaurant']]);
-
-// Route::post('/broadcasting/auth', function () {
-//   return Auth::user();
-// });
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::name('dashboard.restaurant.')->middleware('auth:restaurant')->group(function () {
+
+  Route::resource('dashboard/restaurant/home', RestaurantsHomeController::class)->only(['index']);
+
   Route::resource('dashboard/restaurant/products', ProductController::class)->only(['index', 'store', 'update', 'destroy']);
 });
 

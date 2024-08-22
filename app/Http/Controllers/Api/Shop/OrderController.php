@@ -18,12 +18,9 @@ class OrderController extends Controller
 
   public function __construct(
     protected UserOrdersCrud $userOrdersCrud
-  ) {
-  }
+  ) {}
 
-  public function index()
-  {
-  }
+  public function index() {}
 
   public function store(OrderRequest $request)
   {
