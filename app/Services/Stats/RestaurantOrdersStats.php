@@ -16,11 +16,9 @@ class RestaurantOrdersStats
     )
       ->groupBy(DB::raw('DATE_FORMAT(created_at, "%d-%m")'))
       ->where('restaurant_id', $restaurant_id)
-      ->orderBy(DB::raw('MAX(created_at)'), 'desc')
+      ->orderBy('created_at', 'desc')
       ->limit(7)
       ->get();
-
-    $response = $response->sortBy('formatted_date')->values();
 
     return $response;
   }
@@ -33,6 +31,7 @@ class RestaurantOrdersStats
     )
       ->groupBy(DB::raw('DATE_FORMAT(created_at, "%Y-%m")'))
       ->where('restaurant_id', $restaurant_id)
+      ->whereYear('created_at', date("Y"))
       ->orderBy(DB::raw('DATE_FORMAT(created_at, "%Y-%m")'), 'asc')
       ->get();
 
